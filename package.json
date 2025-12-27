@@ -1,0 +1,37 @@
+{
+  "name": "username-dev-js",
+  "version": "1.0.0",
+  "description": "Official JavaScript SDK and CLI for username.dev",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "pnpm -r build",
+    "clean": "pnpm -r clean"
+  },
+  "keywords": [
+    "username",
+    "validation",
+    "moderation",
+    "governance",
+    "api",
+    "sdk",
+    "cli"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/username-dev/username-dev-js.git"
+  },
+  "homepage": "https://www.username.dev",
+  "bugs": {
+    "url": "https://github.com/username-dev/username-dev-js/issues"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "typescript": "^5.3.3"
+  }
+}
+

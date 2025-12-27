@@ -1,0 +1,89 @@
+# username.dev
+
+> A simple API for username validation and moderation. Block profanity, protect brand names, identify premium handles, and prevent impersonation with one API call.
+
+## What is username.dev?
+
+username.dev provides a REST API that helps platforms validate and moderate usernames at registration time. Instead of building and maintaining your own profanity filters, brand protection lists, and reserved username databases, you can use our API to get instant results on whether a username should be allowed, flagged, or blocked.
+
+The API checks usernames against:
+- Profanity and inappropriate content
+- Trademarked brand names
+- Celebrity and public figure names
+- System/admin-like terms
+- Premium short usernames
+- Unicode homoglyph attacks
+- And 10+ other category types
+
+## API Documentation
+
+- [API Documentation](https://docs.username.dev): Complete API reference, authentication, rate limits, and code examples
+- [API Status](https://status.username.dev): Real-time API uptime and incident reporting
+
+## Core Features
+
+The username.dev API provides:
+- **Profanity Detection**: Block offensive, vulgar, and inappropriate usernames automatically
+- **Brand Protection**: Identify trademarked company names like google, apple, microsoft
+- **Celebrity Detection**: Flag names of famous individuals who require identity verification
+- **System Username Blocking**: Prevent admin, root, api, and other system-conflicting handles
+- **Premium Username Identification**: Detect high-value short usernames like ai, x, vip
+- **Unicode/Homoglyph Detection**: Catch lookalike character attacks like gооgle (Cyrillic o's)
+- **Geographic Terms**: Identify city, country, and location names like paris, tokyo, california
+- **Government Entity Protection**: Flag fbi, cia, police, and official government terms
+- **Financial Term Detection**: Identify banking and crypto terms that attract fraud
+- **Medical Term Protection**: Flag doctor, pharmacy, and healthcare impersonation attempts
+
+## Pricing
+
+username.dev uses a pay-as-you-go credit system with one-time purchases (no subscriptions):
+
+- **Free Trial**: 1,000 API requests for $0 (one-time, for testing)
+- **Starter Pack**: 100,000 requests for $10 ($0.10 per 1,000 requests)
+- **Pro Pack**: 500,000 requests for $30 ($0.06 per 1,000 requests) — 40% savings, best value
+- **Scale Pack**: 2,000,000 requests for $100 ($0.05 per 1,000 requests) — 50% savings
+
+All plans include the same features: profanity detection, brand protection, premium username identification, and all 10+ moderation categories. Credits never expire.
+
+- [View Pricing](https://www.username.dev/#pricing): Full pricing details and comparison
+
+## Username Rule Categories
+
+- [System & Infrastructure Usernames](https://www.username.dev/username-rules/system): Technical usernames like admin, root, api that platforms block
+- [Brand Names & Trademarks](https://www.username.dev/username-rules/brands): Protected company names and brand identifiers
+- [Celebrities & Public Figures](https://www.username.dev/username-rules/celebrities): Famous individuals requiring identity verification
+- [Geographic Locations](https://www.username.dev/username-rules/geography): City, country, and location names
+- [Government & Official Entities](https://www.username.dev/username-rules/government): Government agencies and law enforcement terms
+- [Security & Authentication](https://www.username.dev/username-rules/security): Security terms exploited for phishing
+- [Support & Customer Service](https://www.username.dev/username-rules/support): Help desk and support terms
+- [Premium & Short Usernames](https://www.username.dev/username-rules/premium): High-value short handles
+- [Unicode & Homoglyph Attacks](https://www.username.dev/username-rules/unicode): Lookalike character impersonation
+- [Financial & Banking Terms](https://www.username.dev/username-rules/financial): Banking and cryptocurrency terminology
+- [Medical & Healthcare](https://www.username.dev/username-rules/medical): Healthcare provider and medical terms
+
+## Guides & Resources
+
+- [Reserved Usernames](https://www.username.dev/reserved-usernames): Complete guide to why platforms reserve certain usernames
+- [Premium Usernames](https://www.username.dev/premium-usernames): Understanding high-value username economics
+- [Username Blacklist](https://www.username.dev/username-blacklist): Building and maintaining blocklists
+- [Username Governance](https://www.username.dev/username-governance): Best practices for platform username policies
+- [Username Rules](https://www.username.dev/username-rules): Overview of username moderation categories
+- [Common Usernames to Reserve](https://www.username.dev/common-usernames-to-reserve): Essential handles every platform should block
+
+## Legal
+
+- [Terms of Service](https://www.username.dev/terms): Terms governing API usage
+- [Privacy Policy](https://www.username.dev/privacy): How we handle data
+
+## Authentication
+
+- [Sign Up](https://app.username.dev/signup): Create a free account to get API keys
+- [Log In](https://app.username.dev/login): Access your dashboard and API keys
+
+## Contact
+
+- Email: sourabh@username.dev
+- Twitter: https://x.com/choraria
+- LinkedIn: https://linkedin.com/in/choraria
+- GitHub: https://github.com/choraria
+

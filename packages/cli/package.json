@@ -1,0 +1,51 @@
+{
+  "name": "username-dev",
+  "version": "1.0.0",
+  "description": "Official CLI for username.dev — the complete solution for username governance",
+  "type": "module",
+  "bin": {
+    "username-dev": "./dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "username",
+    "validation",
+    "moderation",
+    "governance",
+    "cli",
+    "command-line",
+    "brand",
+    "profanity"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/username-dev/username-dev-js.git",
+    "directory": "packages/cli"
+  },
+  "homepage": "https://www.username.dev",
+  "bugs": {
+    "url": "https://github.com/username-dev/username-dev-js/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@username-dev/client": "workspace:*",
+    "commander": "^11.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "typescript": "^5.3.3"
+  }
+}
+

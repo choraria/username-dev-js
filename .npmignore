@@ -1,0 +1,48 @@
+# Source files (only publish dist/)
+src/
+*.ts
+!*.d.ts
+
+# Configuration files
+tsconfig.json
+pnpm-workspace.yaml
+.gitignore
+.npmignore
+
+# Git
+.git/
+.gitattributes
+.gitmodules
+
+# Environment files
+.env*
+*.key
+*.pem
+*.cert
+
+# Documentation (reference files)
+docs/
+prompt.md
+llms.txt
+
+# IDE
+.idea/
+.vscode/
+
+# Testing
+test/
+tests/
+*.test.ts
+*.spec.ts
+coverage/
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build artifacts
+*.tsbuildinfo
+

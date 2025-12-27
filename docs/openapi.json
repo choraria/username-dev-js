@@ -1,0 +1,407 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Username API",
+    "version": "1.0.0",
+    "description": "The complete solution for username governance. Filter brands, profanity, reserved words, and premium names with a single API call. Stop maintaining blacklists—let the API govern usernames for you.",
+    "contact": {
+      "email": "sourabh@username.dev"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://api.username.dev",
+      "description": "Production server"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "API Key",
+        "description": "API key in format: un_live_<32-char-random>. Get your API key from the dashboard at https://app.username.dev/dashboard"
+      }
+    },
+    "schemas": {
+      "UsernameCheckResponse": {
+        "type": "object",
+        "required": ["username", "isReserved", "isDeleted", "categories"],
+        "description": "Response containing username validation results, reservation status, deletion status, and associated categories with metadata.",
+        "properties": {
+          "username": {
+            "type": "string",
+            "description": "The normalized username that was checked (whitespace removed, lowercase).",
+            "example": "berlin"
+          },
+          "isReserved": {
+            "type": "boolean",
+            "description": "Whether the username is reserved (exists in the database with one or more categories). True if reserved, false if available.",
+            "example": true
+          },
+          "isDeleted": {
+            "type": "boolean",
+            "description": "Whether the username has been marked as deleted. Deleted usernames are still considered reserved but may be flagged differently in your application.",
+            "example": false
+          },
+          "categories": {
+            "type": "array",
+            "description": "List of categories associated with this username. Empty array if username is not reserved. Categories can include: other, dictionary, city, country, region, brand, first_name, last_name, system, restricted, product, public_figure, government, agency, institution, event, company, place, organization.",
+            "items": {
+              "$ref": "#/components/schemas/UsernameCategory"
+            },
+            "example": [
+              {
+                "category": "city",
+                "metadata": {
+                  "country": "DE"
+                }
+              },
+              {
+                "category": "government",
+                "metadata": {
+                  "country": "DE"
+                }
+              }
+            ]
+          }
+        }
+      },
+      "UsernameCategory": {
+        "type": "object",
+        "required": ["category"],
+        "description": "A category associated with a username. Categories help identify the type of reserved username (e.g., city, brand, public_figure). Some categories include metadata like country codes or language codes.",
+        "properties": {
+          "category": {
+            "type": "string",
+            "description": "The category name. Possible values: other, dictionary, city, country, region, brand, first_name, last_name, system, restricted, product, public_figure, government, agency, institution, event, company, place, organization.",
+            "enum": [
+              "other",
+              "dictionary",
+              "city",
+              "country",
+              "region",
+              "brand",
+              "first_name",
+              "last_name",
+              "system",
+              "restricted",
+              "product",
+              "public_figure",
+              "government",
+              "agency",
+              "institution",
+              "event",
+              "company",
+              "place",
+              "organization"
+            ],
+            "example": "city"
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/CategoryMetadata",
+            "description": "Optional metadata associated with the category. Some categories require metadata (e.g., city requires country code, dictionary requires language code)."
+          }
+        }
+      },
+      "CategoryMetadata": {
+        "type": "object",
+        "description": "Metadata associated with a category. Categories that require metadata: city (country), dictionary (lang), government (country), agency (country), institution (country), company (country), place (country).",
+        "properties": {
+          "country": {
+            "type": "string",
+            "description": "ISO country code (e.g., 'DE' for Germany, 'US' for United States). Required for categories: city, government, agency, institution, company, place.",
+            "example": "DE",
+            "pattern": "^[A-Z]{2}$"
+          },
+          "lang": {
+            "type": "string",
+            "description": "Language code (e.g., 'en' for English, 'de' for German). Required for dictionary category.",
+            "example": "en",
+            "pattern": "^[a-z]{2}$"
+          }
+        }
+      },
+      "ProblemDetail": {
+        "type": "object",
+        "required": ["type", "title", "status", "detail", "instance"],
+        "description": "RFC 7807 Problem Details for HTTP APIs error response format.",
+        "properties": {
+          "type": {
+            "type": "string",
+            "format": "uri",
+            "description": "A URI reference that identifies the problem type. This URI should be human-readable and point to documentation explaining the error.",
+            "example": "https://docs.username.dev/errors/invalid-input"
+          },
+          "title": {
+            "type": "string",
+            "description": "A short, human-readable summary of the problem type.",
+            "example": "Invalid Input"
+          },
+          "status": {
+            "type": "integer",
+            "description": "The HTTP status code for this occurrence of the problem.",
+            "example": 400,
+            "minimum": 100,
+            "maximum": 599
+          },
+          "detail": {
+            "type": "string",
+            "description": "A human-readable explanation specific to this occurrence of the problem.",
+            "example": "Username cannot be empty"
+          },
+          "instance": {
+            "type": "string",
+            "format": "uri-reference",
+            "description": "A URI reference that identifies the specific occurrence of the problem. It may or may not yield further information if dereferenced.",
+            "example": "/check"
+          },
+          "retryAfter": {
+            "type": "integer",
+            "description": "Number of seconds to wait before retrying the request. Only included in 429 (Rate Limit Exceeded) responses.",
+            "example": 1,
+            "minimum": 1
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/check": {
+      "get": {
+        "summary": "Check username",
+        "description": "Validate usernames in a single API call. Returns whether a username is reserved, its deletion status, and associated categories with metadata. Instantly identify brands, public figures, cities, offensive terms, system-reserved keywords, and more. Username normalization (case, whitespace, unicode) is handled automatically.",
+        "operationId": "checkUsername",
+        "parameters": [
+          {
+            "name": "input",
+            "in": "query",
+            "required": true,
+            "description": "The username to check. Can contain any characters including Unicode. Whitespace will be removed, and the input will be converted to lowercase during normalization.",
+            "schema": {
+              "type": "string",
+              "minLength": 1
+            },
+            "examples": {
+              "reserved_city": {
+                "value": "berlin",
+                "summary": "Reserved city name",
+                "description": "Example of a reserved username (city name)"
+              },
+              "reserved_brand": {
+                "value": "coca-cola",
+                "summary": "Reserved brand name",
+                "description": "Example of a reserved brand name"
+              },
+              "non_reserved": {
+                "value": "randomstring123",
+                "summary": "Non-reserved username",
+                "description": "Example of a username that is not reserved"
+              },
+              "with_whitespace": {
+                "value": "new york",
+                "summary": "Username with whitespace",
+                "description": "Example showing automatic whitespace removal (normalized to \"newyork\")"
+              },
+              "unicode": {
+                "value": "café",
+                "summary": "Unicode characters",
+                "description": "Example showing Unicode character preservation"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response. Returns username validation results. Note: Both reserved and non-reserved usernames return 200 status. Check the `isReserved` field to determine if the username is available.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UsernameCheckResponse"
+                },
+                "examples": {
+                  "reserved_username": {
+                    "summary": "Reserved username with categories",
+                    "description": "Example response for a reserved username (Berlin city)",
+                    "value": {
+                      "username": "berlin",
+                      "isReserved": true,
+                      "isDeleted": false,
+                      "categories": [
+                        {
+                          "category": "city",
+                          "metadata": {
+                            "country": "DE"
+                          }
+                        },
+                        {
+                          "category": "government",
+                          "metadata": {
+                            "country": "DE"
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  "non_reserved_username": {
+                    "summary": "Non-reserved username",
+                    "description": "Example response for a username that is not reserved",
+                    "value": {
+                      "username": "randomstring123",
+                      "isReserved": false,
+                      "isDeleted": false,
+                      "categories": []
+                    }
+                  },
+                  "deleted_username": {
+                    "summary": "Deleted username",
+                    "description": "Example response for a username that has been marked as deleted",
+                    "value": {
+                      "username": "deleteduser",
+                      "isReserved": true,
+                      "isDeleted": true,
+                      "categories": [
+                        {
+                          "category": "restricted"
+                        }
+                      ]
+                    }
+                  },
+                  "brand_category": {
+                    "summary": "Brand category",
+                    "description": "Example response showing a brand category",
+                    "value": {
+                      "username": "cocacola",
+                      "isReserved": true,
+                      "isDeleted": false,
+                      "categories": [
+                        {
+                          "category": "brand"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Invalid input. The username parameter is empty or missing.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                },
+                "example": {
+                  "type": "https://docs.username.dev/errors/invalid-input",
+                  "title": "Invalid Input",
+                  "status": 400,
+                  "detail": "Username cannot be empty",
+                  "instance": "/check"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid API key or account deleted. Check your Authorization header and ensure your API key is valid and your account is active.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                },
+                "examples": {
+                  "invalid_api_key": {
+                    "summary": "Invalid API Key",
+                    "value": {
+                      "type": "https://docs.username.dev/errors/invalid-api-key",
+                      "title": "Invalid API Key",
+                      "status": 401,
+                      "detail": "API key is invalid or missing",
+                      "instance": "/check?input=test"
+                    }
+                  },
+                  "account_deleted": {
+                    "summary": "Account Deleted",
+                    "value": {
+                      "type": "https://docs.username.dev/errors/account-deleted",
+                      "title": "Account Deleted",
+                      "status": 401,
+                      "detail": "This account has been deleted. Contact support to restore your account.",
+                      "instance": "/check?input=test"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "402": {
+            "description": "Payment Required - Request quota has been depleted. Purchase additional request packs from your dashboard.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                },
+                "example": {
+                  "type": "https://docs.username.dev/errors/quota-exceeded",
+                  "title": "Request Quota Depleted",
+                  "status": 402,
+                  "detail": "Request quota depleted. Please purchase additional requests.",
+                  "instance": "/check?input=test"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests - Rate limit exceeded. You are making requests faster than 5 requests per second. The `retryAfter` field indicates how many seconds to wait before retrying.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                },
+                "example": {
+                  "type": "https://docs.username.dev/errors/rate-limit-exceeded",
+                  "title": "Rate Limit Exceeded",
+                  "status": 429,
+                  "detail": "Rate limit exceeded. Please retry after 1 second.",
+                  "instance": "/check?input=test",
+                  "retryAfter": 1
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Number of seconds to wait before retrying",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable - The service is temporarily unavailable. This is rare and typically occurs during maintenance or unexpected issues. Retry your request after a brief delay.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                },
+                "example": {
+                  "type": "https://docs.username.dev/errors/service-unavailable",
+                  "title": "Service Unavailable",
+                  "status": 503,
+                  "detail": "Service temporarily unavailable. Using cached response.",
+                  "instance": "/check?input=test"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
