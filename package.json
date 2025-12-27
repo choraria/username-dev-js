@@ -23,11 +23,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/username-dev/username-dev-js.git"
+    "url": "https://github.com/choraria/username-dev-js.git"
   },
   "homepage": "https://www.username.dev",
   "bugs": {
-    "url": "https://github.com/username-dev/username-dev-js/issues"
+    "url": "https://github.com/choraria/username-dev-js/issues"
   },
   "devDependencies": {
     "@types/node": "^20.10.0",

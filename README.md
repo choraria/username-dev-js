@@ -7,7 +7,7 @@
 <p align="center">
   <a href="https://www.npmjs.com/package/@username-dev/client"><img src="https://img.shields.io/npm/v/@username-dev/client?color=blue&label=SDK" alt="npm version"></a>
   <a href="https://www.npmjs.com/package/username-dev"><img src="https://img.shields.io/npm/v/username-dev?color=blue&label=CLI" alt="npm version"></a>
-  <a href="https://github.com/username-dev/username-dev-js/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="License"></a>
+  <a href="https://github.com/choraria/username-dev-js/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="License"></a>
   <a href="https://status.username.dev"><img src="https://img.shields.io/badge/status-operational-brightgreen" alt="Status"></a>
 </p>
 
@@ -435,7 +435,7 @@ Example: `un_live_a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6`
 - **Dashboard:** [app.username.dev](https://app.username.dev/dashboard)
 - **Status Page:** [status.username.dev](https://status.username.dev)
 - **Email:** sourabh@username.dev
-- **GitHub Issues:** [github.com/username-dev/username-dev-js/issues](https://github.com/username-dev/username-dev-js/issues)
+- **GitHub Issues:** [github.com/choraria/username-dev-js/issues](https://github.com/choraria/username-dev-js/issues)
 
 ---
 
