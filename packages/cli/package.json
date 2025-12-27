@@ -1,6 +1,6 @@
 {
   "name": "username-dev",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Official CLI for username.dev — the complete solution for username governance",
   "type": "module",
   "bin": {
